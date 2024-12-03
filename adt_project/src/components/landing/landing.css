@@ -425,6 +425,26 @@
   75% { transform: rotate(5deg); }
 }
 
+@keyframes logoAnimation {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(2px 2px 12px rgba(255, 255, 255, 0.9));
+  }
+  50% {
+    transform: scale(1.05);
+    filter: drop-shadow(2px 2px 16px rgba(255, 255, 255, 1));
+  }
+}
+
+@keyframes logoJiggle {
+  0%, 100% { transform: rotate(0deg); }
+  10% { transform: rotate(-5deg); }
+  20% { transform: rotate(5deg); }
+  30% { transform: rotate(-5deg); }
+  40% { transform: rotate(5deg); }
+  50% { transform: rotate(0deg); }
+}
+
 /* Mobile Responsiveness */
 @media screen and (max-width: 768px) {
   .landing-container {
@@ -488,4 +508,25 @@
   .right-panel {
     padding: 0.5rem;
   }
+}
+
+.logo-container {
+  position: absolute;
+  top: 50px;
+  left: 50px;
+  z-index: 10;
+}
+
+.landing-logo {
+  width: 120px;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(2px 2px 12px rgba(255, 255, 255, 0.9));
+  animation: logoAnimation 3s ease-in-out infinite;
+  transition: transform 0.2s ease;
+}
+
+.landing-logo:hover {
+  animation: logoJiggle 0.5s;
+  cursor: pointer;
 }

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./login.css";
 
 const Login = () => {
@@ -7,6 +8,25 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+
+  const handleLogin = async () => {
+    try {
+      const response = await axios.post('http://localhost/movieproject-api/login.php', {
+        username: email,
+        password: password
+      });
+
+      if (response.data.status === 'success') {
+        alert('good');
+        navigate("/dashboard");
+      } else {
+        alert('bad');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      alert('bad');
+    }
+  };
 
   return (
     <div className="login-container">
@@ -19,6 +39,13 @@ const Login = () => {
         <div className="circle-6"></div>
         <div className="circle-7"></div>
         <div className="circle-8"></div>
+        <div className="logo-container">
+          <img 
+            src="/logoMovie.png" 
+            alt="Movie Hub Logo" 
+            className="login-logo" 
+          />
+        </div>
       </div>
       <div className="right-panel">
         <div className="shape-1"></div>
@@ -58,7 +85,7 @@ const Login = () => {
         </div>
         
         <div className="login-buttons">
-          <button onClick={() => navigate("/dashboard")}>
+          <button onClick={handleLogin}>
             Login
           </button>
           <button onClick={() => navigate("/register")}>

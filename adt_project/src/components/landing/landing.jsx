@@ -16,6 +16,13 @@ const Landing = () => {
         <div className="circle-6"></div>
         <div className="circle-7"></div>
         <div className="circle-8"></div>
+        <div className="logo-container">
+          <img 
+            src="/logoMovie.png" 
+            alt="Movie Hub Logo" 
+            className="landing-logo" 
+          />
+        </div>
       </div>
       <div className="right-panel">
         <div className="shape-1"></div>

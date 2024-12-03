@@ -1,15 +1,48 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./register.css";
 
 const Register = () => {
   const [firstName, setFirstName] = useState("");
+  const [middleName, setMiddleName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
+  const [contactNo, setContactNo] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+
+  const handleRegister = async () => {
+    // Basic validation
+    if (password !== confirmPassword) {
+      alert('Passwords do not match');
+      return;
+    }
+
+    try {
+      const response = await axios.post('http://localhost/movieproject-api/register.php', {
+        firstName: firstName,
+        middleName: middleName,
+        lastName: lastName,
+        email: email,
+        contactNo: contactNo,
+        password: password,
+        role: "user"
+      });
+
+      if (response.data.status === 'success') {
+        alert('good');
+        navigate("/login");
+      } else {
+        alert('bad');
+      }
+    } catch (error) {
+      console.error('Registration error:', error);
+      alert('bad');
+    }
+  };
 
   return (
     <div className="register-container">
@@ -22,6 +55,13 @@ const Register = () => {
         <div className="circle-6"></div>
         <div className="circle-7"></div>
         <div className="circle-8"></div>
+        <div className="logo-container">
+          <img 
+            src="/logoMovie.png" 
+            alt="Movie Hub Logo" 
+            className="register-logo" 
+          />
+        </div>
       </div>
       <div className="right-panel">
         <div className="shape-1"></div>
@@ -34,13 +74,20 @@ const Register = () => {
         <div className="shape-8"></div>
         <div className="shape-9"></div>
         <h1>JOIN US NOW</h1>
-        <p>Create an account to watch your favorite movies  </p>
+        <p>Create an account to watch your favorite movies</p>
         
         <input 
           type="text" 
           placeholder="First Name" 
           value={firstName}
           onChange={(e) => setFirstName(e.target.value)}
+        />
+        
+        <input 
+          type="text" 
+          placeholder="Middle Name" 
+          value={middleName}
+          onChange={(e) => setMiddleName(e.target.value)}
         />
         
         <input 
@@ -55,6 +102,13 @@ const Register = () => {
           placeholder="Email Address" 
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+        />
+        
+        <input 
+          type="tel" 
+          placeholder="Contact Number" 
+          value={contactNo}
+          onChange={(e) => setContactNo(e.target.value)}
         />
         
         <input 
@@ -82,7 +136,7 @@ const Register = () => {
         </div>
         
         <div className="register-buttons">
-          <button onClick={() => navigate("/dashboard")}>
+          <button onClick={handleRegister}>
             Register
           </button>
           <button onClick={() => navigate("/login")}>
