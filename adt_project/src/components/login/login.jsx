@@ -1,36 +1,73 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useUser } from "../../contexts/UserContext";
 import "./login.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { login } = useUser();
 
   const handleLogin = async () => {
+    setError("");
+
     try {
-      const response = await axios.post('http://localhost/movieproject-api/login.php', {
-        username: email,
+      const response = await axios.post('/admin/login', {
+        email: email,
         password: password
       });
 
-      if (response.data.status === 'success') {
-        alert('good');
-        navigate("/dashboard");
+      if (response.data.access_token) {
+        const userData = {
+          id: response.data.user.userId,
+          firstName: response.data.user.firstName,
+          middleName: response.data.user.middleName,
+          lastName: response.data.user.lastName,
+          email: response.data.user.email,
+          contactNo: response.data.user.contactNo,
+          role: response.data.user.role
+        };
+
+        login(userData, response.data.access_token);
+
+        if (response.data.user.role === 'admin') {
+          navigate("/homepage");
+        } else {
+          navigate("/");
+        }
       } else {
-        alert('bad');
+        setError('Login failed. Please check your credentials.');
       }
     } catch (error) {
-      console.error('Login error:', error);
-      alert('bad');
+      console.error('Full Login Error:', error);
+      
+      if (error.response) {
+        console.error('Response Error:', error.response.data);
+        console.error('Response Status:', error.response.status);
+        console.error('Response Headers:', error.response.headers);
+        setError(error.response.data.message || 'Login failed. Please try again.');
+      } else if (error.request) {
+        console.error('Request Error:', error.request);
+        setError('No response from server. Please check your network connection.');
+      } else {
+        console.error('Setup Error:', error.message);
+        setError('An error occurred during login. Please try again.');
+      }
     }
   };
 
   return (
     <div className="login-container">
       <div className="left-panel">
+        <img 
+          src="/logoMovie.png" 
+          alt="Movie Hub Logo" 
+          className="login-logo"
+        />
         <div className="circle-1"></div>
         <div className="circle-2"></div>
         <div className="circle-3"></div>
@@ -39,13 +76,6 @@ const Login = () => {
         <div className="circle-6"></div>
         <div className="circle-7"></div>
         <div className="circle-8"></div>
-        <div className="logo-container">
-          <img 
-            src="/logoMovie.png" 
-            alt="Movie Hub Logo" 
-            className="login-logo" 
-          />
-        </div>
       </div>
       <div className="right-panel">
         <div className="shape-1"></div>
@@ -59,6 +89,8 @@ const Login = () => {
         <div className="shape-9"></div>
         <h1>WELCOME BACK</h1>
         <p>Login to start watching your favorite movies</p>
+        
+        {error && <div className="error-message">{error}</div>}
         
         <input 
           type="email" 

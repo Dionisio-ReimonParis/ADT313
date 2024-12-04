@@ -8,6 +8,20 @@ const Landing = () => {
   return (
     <div className="landing-container">
       <div className="left-panel">
+        <img 
+          src="/logoMovie.png" 
+          alt="Movie Hub Logo" 
+          className="landing-logo"
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%) scale(0.5)',
+            zIndex: 3,
+            maxWidth: '100%',
+            height: 'auto'
+          }}
+        />
         <div className="circle-1"></div>
         <div className="circle-2"></div>
         <div className="circle-3"></div>
@@ -16,13 +30,6 @@ const Landing = () => {
         <div className="circle-6"></div>
         <div className="circle-7"></div>
         <div className="circle-8"></div>
-        <div className="logo-container">
-          <img 
-            src="/logoMovie.png" 
-            alt="Movie Hub Logo" 
-            className="landing-logo" 
-          />
-        </div>
       </div>
       <div className="right-panel">
         <div className="shape-1"></div>

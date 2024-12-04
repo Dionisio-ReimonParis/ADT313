@@ -9,7 +9,6 @@
   border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-/* Dark mode styles */
 .dark-mode .landing-container {
   background: transparent;
 }
@@ -17,11 +16,11 @@
 .left-panel {
   width: 60%;
   max-width: 60%;
-  flex: 0 0 60%; /* Prevent growing or shrinking */
+  flex: 0 0 60%; 
   position: relative;
   overflow: hidden;
   transition: all 0.3s ease;
-  border-right: 10px solid #0066cc; /* Increased to a 10px thick blue border on the right side */
+  border-right: 10px solid #0066cc; 
   background: url(C:\Users\user\admin-dashboard-paris-bsit3c\public\backgroundImage.jpg) no-repeat 85% center;
   background-size: cover;
 }
@@ -133,10 +132,29 @@
   z-index: 1;
 }
 
+.left-panel .landing-logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.5);
+  z-index: 3;
+  max-width: 100%;
+  height: auto;
+  filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.9));
+  animation: landing-breathing 4s ease-in-out infinite;
+  transition: all 0.3s ease, filter 0.3s ease;
+}
+
+.left-panel .landing-logo:hover {
+  animation: landing-jiggle 0.5s ease-in-out;
+  cursor: pointer;
+  filter: drop-shadow(0 0 25px rgba(255, 255, 255, 1)) brightness(1.2);
+}
+
 .right-panel {
   width: 40%;
   max-width: 40%;
-  flex: 0 0 40%; /* Prevent growing or shrinking */
+  flex: 0 0 40%; 
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -295,7 +313,6 @@
   z-index: 2;
 }
 
-/* Dark mode styles */
 .dark-mode .right-panel {
   background: black;
 }
@@ -363,7 +380,6 @@
   box-shadow: 0 10px 20px rgba(0,0,0,0.1);
 }
 
-/* Animated background shapes */
 @keyframes moveShape1 {
   0% { transform: translate(0, 0) rotate(0deg); }
   50% { transform: translate(50px, 30px) rotate(180deg); }
@@ -406,7 +422,6 @@
   100% { transform: translateY(0) scale(1); }
 }
 
-/* Additional Animations */
 @keyframes float {
   0% { transform: translateY(0px); }
   50% { transform: translateY(-20px); }
@@ -425,27 +440,6 @@
   75% { transform: rotate(5deg); }
 }
 
-@keyframes logoAnimation {
-  0%, 100% {
-    transform: scale(1);
-    filter: drop-shadow(2px 2px 12px rgba(255, 255, 255, 0.9));
-  }
-  50% {
-    transform: scale(1.05);
-    filter: drop-shadow(2px 2px 16px rgba(255, 255, 255, 1));
-  }
-}
-
-@keyframes logoJiggle {
-  0%, 100% { transform: rotate(0deg); }
-  10% { transform: rotate(-5deg); }
-  20% { transform: rotate(5deg); }
-  30% { transform: rotate(-5deg); }
-  40% { transform: rotate(5deg); }
-  50% { transform: rotate(0deg); }
-}
-
-/* Mobile Responsiveness */
 @media screen and (max-width: 768px) {
   .landing-container {
     flex-direction: column;
@@ -457,8 +451,8 @@
     width: 100%;
     max-width: 100%;
     flex: 0 0 100%;
-    min-height: 50vh; /* Ensure minimum height */
-    height: 50vh; /* Consistent height */
+    min-height: 50vh;
+    height: 50vh;
   }
 
   .left-panel {
@@ -466,17 +460,16 @@
     background-size: cover;
     border-right: none;
     border-bottom: 10px solid #0066cc;
-    order: -1; /* Ensure left panel appears first */
+    order: -1; 
   }
 
   .right-panel {
     padding: 1rem;
-    justify-content: center; /* Center content vertically */
+    justify-content: center; 
     align-items: center;
     text-align: center;
   }
 
-  /* Adjust decorative circles for mobile */
   .left-panel .circle-1,
   .left-panel .circle-2,
   .left-panel .circle-3,
@@ -485,23 +478,32 @@
   .left-panel .circle-6,
   .left-panel .circle-7,
   .left-panel .circle-8 {
-    display: none; /* Hide decorative elements */
+    display: none; 
   }
 
   .right-panel .shape-1,
   .right-panel .shape-2 {
-    display: none; /* Hide decorative shapes */
+    display: none;
+  }
+
+  .left-panel .landing-logo {
+    transform: translate(-50%, -50%) scale(0.4);
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.9));
+    animation: landing-breathing-mobile 4s ease-in-out infinite;
+  }
+
+  .left-panel .landing-logo:hover {
+    animation: landing-jiggle-mobile 0.5s ease-in-out;
   }
 }
 
-/* Smaller mobile devices */
 @media screen and (max-width: 480px) {
   .landing-container {
     overflow-x: hidden;
   }
 
   .left-panel, .right-panel {
-    min-height: 40vh; /* Slightly shorter on very small screens */
+    min-height: 40vh; 
     height: auto;
   }
 
@@ -510,23 +512,29 @@
   }
 }
 
-.logo-container {
-  position: absolute;
-  top: 50px;
-  left: 50px;
-  z-index: 10;
+@keyframes landing-breathing {
+  0% { transform: translate(-50%, -50%) scale(0.5); }
+  50% { transform: translate(-50%, -50%) scale(0.55); }
+  100% { transform: translate(-50%, -50%) scale(0.5); }
 }
 
-.landing-logo {
-  width: 120px;
-  height: auto;
-  object-fit: contain;
-  filter: drop-shadow(2px 2px 12px rgba(255, 255, 255, 0.9));
-  animation: logoAnimation 3s ease-in-out infinite;
-  transition: transform 0.2s ease;
+@keyframes landing-breathing-mobile {
+  0% { transform: translate(-50%, -50%) scale(0.4); }
+  50% { transform: translate(-50%, -50%) scale(0.45); }
+  100% { transform: translate(-50%, -50%) scale(0.4); }
 }
 
-.landing-logo:hover {
-  animation: logoJiggle 0.5s;
-  cursor: pointer;
+@keyframes landing-jiggle {
+  0% { transform: translate(-50%, -50%) scale(0.5) rotate(0deg); }
+  25% { transform: translate(-50%, -50%) scale(0.5) rotate(-5deg); }
+  75% { transform: translate(-50%, -50%) scale(0.5) rotate(5deg); }
+  100% { transform: translate(-50%, -50%) scale(0.5) rotate(0deg); }
 }
+
+@keyframes landing-jiggle-mobile {
+  0% { transform: translate(-50%, -50%) scale(0.4) rotate(0deg); }
+  25% { transform: translate(-50%, -50%) scale(0.4) rotate(-5deg); }
+  75% { transform: translate(-50%, -50%) scale(0.4) rotate(5deg); }
+  100% { transform: translate(-50%, -50%) scale(0.4) rotate(0deg); }
+}
+

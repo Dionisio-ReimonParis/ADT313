@@ -7,7 +7,7 @@
 
 .left-panel {
   flex: 1;
-  background: url(C:\Users\user\admin-dashboard-paris-bsit3c\public\backgroundImage.jpg) no-repeat 85% center;
+  background: url('C:/Users/user/admin-dashboard-paris-bsit3c/public/backgroundImage.jpg') no-repeat 85% center;
   background-size: cover;
   position: relative;
   overflow: hidden;
@@ -125,6 +125,62 @@
   background: rgba(52, 152, 219, 0.03);
   animation: circleFloat3 7s infinite ease-in-out;
   z-index: 1;
+}
+
+.left-panel .login-logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.5);
+  z-index: 3;
+  max-width: 100%;
+  height: auto;
+  filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.9));
+  animation: breathing 4s ease-in-out infinite;
+  transition: all 0.3s ease, filter 0.3s ease;
+}
+
+.left-panel .login-logo:hover {
+  animation: jiggle 0.5s ease-in-out;
+  cursor: pointer;
+  filter: drop-shadow(0 0 25px rgba(255, 255, 255, 1)) brightness(1.2);
+}
+
+@keyframes breathing {
+  0% { transform: translate(-50%, -50%) scale(0.5); }
+  50% { transform: translate(-50%, -50%) scale(0.55); }
+  100% { transform: translate(-50%, -50%) scale(0.5); }
+}
+
+@keyframes jiggle {
+  0% { transform: translate(-50%, -50%) scale(0.5) rotate(0deg); }
+  25% { transform: translate(-50%, -50%) scale(0.5) rotate(-5deg); }
+  75% { transform: translate(-50%, -50%) scale(0.5) rotate(5deg); }
+  100% { transform: translate(-50%, -50%) scale(0.5) rotate(0deg); }
+}
+
+@media screen and (max-width: 768px) {
+  .left-panel .login-logo {
+    transform: translate(-50%, -50%) scale(0.4);
+    animation: breathing-mobile 4s ease-in-out infinite;
+  }
+
+  .left-panel .login-logo:hover {
+    animation: jiggle-mobile 0.5s ease-in-out;
+  }
+}
+
+@keyframes breathing-mobile {
+  0% { transform: translate(-50%, -50%) scale(0.4); }
+  50% { transform: translate(-50%, -50%) scale(0.45); }
+  100% { transform: translate(-50%, -50%) scale(0.4); }
+}
+
+@keyframes jiggle-mobile {
+  0% { transform: translate(-50%, -50%) scale(0.4) rotate(0deg); }
+  25% { transform: translate(-50%, -50%) scale(0.4) rotate(-5deg); }
+  75% { transform: translate(-50%, -50%) scale(0.4) rotate(5deg); }
+  100% { transform: translate(-50%, -50%) scale(0.4) rotate(0deg); }
 }
 
 .right-panel {
@@ -264,47 +320,6 @@
   border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
   animation: moveShape1 8s infinite linear;
   z-index: 1;
-}
-
-.logo-container {
-  position: absolute;
-  top: 50px;
-  left: 50px;
-  z-index: 10;
-}
-
-@keyframes logoAnimation {
-  0%, 100% {
-    transform: scale(1);
-    filter: drop-shadow(2px 2px 12px rgba(255, 255, 255, 0.9));
-  }
-  50% {
-    transform: scale(1.05);
-    filter: drop-shadow(2px 2px 16px rgba(255, 255, 255, 1));
-  }
-}
-
-@keyframes logoJiggle {
-  0%, 100% { transform: rotate(0deg); }
-  10% { transform: rotate(-5deg); }
-  20% { transform: rotate(5deg); }
-  30% { transform: rotate(-5deg); }
-  40% { transform: rotate(5deg); }
-  50% { transform: rotate(0deg); }
-}
-
-.login-logo {
-  width: 120px;
-  height: auto;
-  object-fit: contain;
-  filter: drop-shadow(2px 2px 12px rgba(255, 255, 255, 0.9));
-  animation: logoAnimation 3s ease-in-out infinite;
-  transition: transform 0.2s ease;
-}
-
-.login-logo:hover {
-  animation: logoJiggle 0.5s;
-  cursor: pointer;
 }
 
 @keyframes moveShape1 {
@@ -463,17 +478,27 @@
 }
 
 .login-buttons button:last-child {
-  background: #2ecc71;
+  background: #7f8c8d;
   margin-bottom: 0;
 }
 
 .login-buttons .go-back-btn {
-  background: #95a5a6;
+  background: #7f8c8d !important;
   margin-top: 0.5rem;
 }
 
 .login-buttons .go-back-btn:hover {
-  background: #7f8c8d;
+  background: #6c7a80 !important;
+}
+
+.error-message {
+  background-color: #ff6b6b;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  width: 100%;
+  text-align: center;
 }
 
 /* Mobile Responsiveness */

@@ -1,4 +1,3 @@
-/* Same layout structure as landing.css */
 .register-container {
   display: flex;
   height: 100vh;
@@ -7,7 +6,7 @@
 
 .left-panel {
   flex: 1;
-  background: url(C:\Users\user\admin-dashboard-paris-bsit3c\public\backgroundImage.jpg) no-repeat 85% center;
+  background: url('C:/Users/user/admin-dashboard-paris-bsit3c/public/backgroundImage.jpg') no-repeat 85% center;
   background-size: cover;
   position: relative;
   overflow: hidden;
@@ -127,6 +126,62 @@
   z-index: 1;
 }
 
+.left-panel .register-logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.5);
+  z-index: 3;
+  max-width: 100%;
+  height: auto;
+  filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.9));
+  animation: breathing 4s ease-in-out infinite;
+  transition: all 0.3s ease, filter 0.3s ease;
+}
+
+.left-panel .register-logo:hover {
+  animation: jiggle 0.5s ease-in-out;
+  cursor: pointer;
+  filter: drop-shadow(0 0 25px rgba(255, 255, 255, 1)) brightness(1.2);
+}
+
+@keyframes breathing {
+  0% { transform: translate(-50%, -50%) scale(0.5); }
+  50% { transform: translate(-50%, -50%) scale(0.55); }
+  100% { transform: translate(-50%, -50%) scale(0.5); }
+}
+
+@keyframes jiggle {
+  0% { transform: translate(-50%, -50%) scale(0.5) rotate(0deg); }
+  25% { transform: translate(-50%, -50%) scale(0.5) rotate(-5deg); }
+  75% { transform: translate(-50%, -50%) scale(0.5) rotate(5deg); }
+  100% { transform: translate(-50%, -50%) scale(0.5) rotate(0deg); }
+}
+
+@media screen and (max-width: 768px) {
+  .left-panel .register-logo {
+    transform: translate(-50%, -50%) scale(0.4);
+    animation: breathing-mobile 4s ease-in-out infinite;
+  }
+
+  .left-panel .register-logo:hover {
+    animation: jiggle-mobile 0.5s ease-in-out;
+  }
+}
+
+@keyframes breathing-mobile {
+  0% { transform: translate(-50%, -50%) scale(0.4); }
+  50% { transform: translate(-50%, -50%) scale(0.45); }
+  100% { transform: translate(-50%, -50%) scale(0.4); }
+}
+
+@keyframes jiggle-mobile {
+  0% { transform: translate(-50%, -50%) scale(0.4) rotate(0deg); }
+  25% { transform: translate(-50%, -50%) scale(0.4) rotate(-5deg); }
+  75% { transform: translate(-50%, -50%) scale(0.4) rotate(5deg); }
+  100% { transform: translate(-50%, -50%) scale(0.4) rotate(0deg); }
+}
+
 .right-panel {
   flex: 1;
   display: flex;
@@ -134,7 +189,8 @@
   justify-content: center;
   align-items: center;
   background: white;
-  padding: 2rem;
+  padding: 20px;
+  overflow: visible;
   box-shadow: -10px 0 20px rgba(0, 0, 0, 0.05);
   position: relative;
 }
@@ -266,47 +322,6 @@
   z-index: 1;
 }
 
-.logo-container {
-  position: absolute;
-  top: 50px;
-  left: 50px;
-  z-index: 10;
-}
-
-@keyframes logoAnimation {
-  0%, 100% {
-    transform: scale(1);
-    filter: drop-shadow(2px 2px 12px rgba(255, 255, 255, 0.9));
-  }
-  50% {
-    transform: scale(1.05);
-    filter: drop-shadow(2px 2px 16px rgba(255, 255, 255, 1));
-  }
-}
-
-@keyframes logoJiggle {
-  0%, 100% { transform: rotate(0deg); }
-  10% { transform: rotate(-5deg); }
-  20% { transform: rotate(5deg); }
-  30% { transform: rotate(-5deg); }
-  40% { transform: rotate(5deg); }
-  50% { transform: rotate(0deg); }
-}
-
-.register-logo {
-  width: 120px;
-  height: auto;
-  object-fit: contain;
-  filter: drop-shadow(2px 2px 12px rgba(255, 255, 255, 0.9));
-  animation: logoAnimation 3s ease-in-out infinite;
-  transition: transform 0.2s ease;
-}
-
-.register-logo:hover {
-  animation: logoJiggle 0.5s;
-  cursor: pointer;
-}
-
 @keyframes moveShape1 {
   0% { transform: translate(0, 0) rotate(0deg); }
   50% { transform: translate(50px, 30px) rotate(180deg); }
@@ -349,7 +364,6 @@
   100% { transform: translateY(0) scale(1); }
 }
 
-/* Additional Animations */
 @keyframes float {
   0% { transform: translateY(0px); }
   50% { transform: translateY(-20px); }
@@ -368,9 +382,12 @@
   75% { transform: rotate(5deg); }
 }
 
+.right-panel h1, .right-panel p {
+  margin: 0 0 20px 0;
+}
+
 .right-panel h1 {
   font-size: 2.5rem;
-  margin-bottom: 1rem;
   color: #2c3e50;
   font-weight: 700;
   letter-spacing: -1px;
@@ -379,7 +396,6 @@
 
 .right-panel p {
   font-size: 1rem;
-  margin-bottom: 2rem;
   color: #7f8c8d;
   max-width: 350px;
   text-align: center;
@@ -388,14 +404,10 @@
 
 .right-panel input {
   width: 100%;
-  max-width: 350px;
-  padding: 1rem;
-  margin-bottom: 1.5rem;
-  border: 2px solid #e0e0e0;
-  border-radius: 50px;
-  font-size: 0.9rem;
-  transition: all 0.3s ease;
-  outline: none;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 .right-panel input:focus {
@@ -431,14 +443,14 @@
   white-space: nowrap;
 }
 
-.register-buttons {
+.right-panel .register-buttons {
   display: flex;
   flex-direction: column;
   width: 100%;
   max-width: 350px;
 }
 
-.register-buttons button {
+.right-panel .register-buttons button {
   padding: 1rem;
   margin-bottom: 1rem;
   border: none;
@@ -454,7 +466,7 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.register-buttons button:hover {
+.right-panel .register-buttons button:hover {
   transform: translateY(-3px);
   box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
   animation: wiggle 0.5s;
@@ -462,21 +474,25 @@
   box-shadow: 0 10px 20px rgba(0,0,0,0.1);
 }
 
-.register-buttons button:last-child {
-  background: #2ecc71;
-  margin-bottom: 0;
-}
-
-.register-buttons .go-back-btn {
+.right-panel .register-buttons .go-back-btn {
   background: #95a5a6;
   margin-top: 0.5rem;
 }
 
-.register-buttons .go-back-btn:hover {
+.right-panel .register-buttons .go-back-btn:hover {
   background: #7f8c8d;
 }
 
-/* Mobile Responsiveness */
+.error-message {
+  background-color: #ff6b6b;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  width: 100%;
+  text-align: center;
+}
+
 @media screen and (max-width: 768px) {
   .register-container {
     flex-direction: column;
@@ -488,24 +504,23 @@
     width: 100%;
     max-width: 100%;
     flex: 0 0 100%;
-    min-height: 50vh; /* Ensure minimum height */
-    height: 50vh; /* Consistent height */
+    min-height: 50vh; 
+    height: 50vh; 
   }
 
   .left-panel {
     background-position: center;
     background-size: cover;
-    order: -1; /* Ensure left panel appears first */
+    order: -1;
   }
 
   .right-panel {
     padding: 1rem;
-    justify-content: center; /* Center content vertically */
+    justify-content: center; 
     align-items: center;
     text-align: center;
   }
 
-  /* Adjust decorative circles for mobile */
   .left-panel .circle-1,
   .left-panel .circle-2,
   .left-panel .circle-3,
@@ -514,25 +529,24 @@
   .left-panel .circle-6,
   .left-panel .circle-7,
   .left-panel .circle-8 {
-    display: none; /* Hide decorative elements */
+    display: none; 
   }
 
   .right-panel .shape-1,
   .right-panel .shape-2,
   .right-panel .shape-3,
   .right-panel .shape-4 {
-    display: none; /* Hide decorative shapes */
+    display: none; 
   }
 }
 
-/* Smaller mobile devices */
 @media screen and (max-width: 480px) {
   .register-container {
     overflow-x: hidden;
   }
 
   .left-panel, .right-panel {
-    min-height: 40vh; /* Slightly shorter on very small screens */
+    min-height: 40vh; 
     height: auto;
   }
 

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useUser } from "../../contexts/UserContext";
 import "./register.css";
 
 const Register = () => {
@@ -12,41 +13,100 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { login } = useUser();
 
   const handleRegister = async () => {
-    // Basic validation
+    setError("");
+
     if (password !== confirmPassword) {
-      alert('Passwords do not match');
+      setError('Passwords do not match');
       return;
     }
 
     try {
-      const response = await axios.post('http://localhost/movieproject-api/register.php', {
+      const response = await axios.post('/admin/register', {
         firstName: firstName,
         middleName: middleName,
         lastName: lastName,
         email: email,
         contactNo: contactNo,
-        password: password,
-        role: "user"
+        password: password
       });
 
-      if (response.data.status === 'success') {
-        alert('good');
-        navigate("/login");
+      if (response.data.message === "User created") {
+        try {
+          const loginResponse = await axios.post('/admin/login', {
+            email: email,
+            password: password
+          });
+
+          if (loginResponse.data.access_token) {
+            const userData = {
+              id: loginResponse.data.user.userId,
+              firstName: loginResponse.data.user.firstName,
+              middleName: loginResponse.data.user.middleName,
+              lastName: loginResponse.data.user.lastName,
+              email: loginResponse.data.user.email,
+              contactNo: loginResponse.data.user.contactNo,
+              role: loginResponse.data.user.role
+            };
+
+            login(userData, loginResponse.data.access_token);
+
+            if (loginResponse.data.user.role === 'admin') {
+              navigate("/homepage");
+            } else {
+              navigate("/");
+            }
+          } else {
+            setError('Registration successful, but login failed.');
+          }
+        } catch (loginError) {
+          console.error('Full Login after registration Error:', loginError);
+          
+          if (loginError.response) {
+            console.error('Login Response Error:', loginError.response.data);
+            console.error('Login Response Status:', loginError.response.status);
+            console.error('Login Response Headers:', loginError.response.headers);
+          } else if (loginError.request) {
+            console.error('Login Request Error:', loginError.request);
+          } else {
+            console.error('Login Setup Error:', loginError.message);
+          }
+          
+          setError('Registration successful, but could not log in automatically.');
+        }
       } else {
-        alert('bad');
+        setError('Registration failed. Please try again.');
       }
     } catch (error) {
-      console.error('Registration error:', error);
-      alert('bad');
+      console.error('Full Registration Error:', error);
+      
+      if (error.response) {
+        console.error('Response Error:', error.response.data);
+        console.error('Response Status:', error.response.status);
+        console.error('Response Headers:', error.response.headers);
+        setError(error.response.data.message || 'Registration failed. Please try again.');
+      } else if (error.request) {
+        console.error('Request Error:', error.request);
+        setError('No response from server. Please check your network connection.');
+      } else {
+        console.error('Setup Error:', error.message);
+        setError('An error occurred during registration. Please try again.');
+      }
     }
   };
 
   return (
     <div className="register-container">
       <div className="left-panel">
+        <img 
+          src="/logoMovie.png" 
+          alt="Movie Hub Logo" 
+          className="register-logo"
+        />
         <div className="circle-1"></div>
         <div className="circle-2"></div>
         <div className="circle-3"></div>
@@ -55,13 +115,6 @@ const Register = () => {
         <div className="circle-6"></div>
         <div className="circle-7"></div>
         <div className="circle-8"></div>
-        <div className="logo-container">
-          <img 
-            src="/logoMovie.png" 
-            alt="Movie Hub Logo" 
-            className="register-logo" 
-          />
-        </div>
       </div>
       <div className="right-panel">
         <div className="shape-1"></div>
@@ -75,6 +128,8 @@ const Register = () => {
         <div className="shape-9"></div>
         <h1>JOIN US NOW</h1>
         <p>Create an account to watch your favorite movies</p>
+        
+        {error && <div className="error-message">{error}</div>}
         
         <input 
           type="text" 
@@ -137,7 +192,7 @@ const Register = () => {
         
         <div className="register-buttons">
           <button onClick={handleRegister}>
-            Register
+            Join Now
           </button>
           <button onClick={() => navigate("/login")}>
             Already have an account?
