@@ -1,5 +1,5 @@
 {
-  "name": "admin-dashboard-paris-bsit3c",
+  "name": "admin-dashboard",
   "version": "0.1.0",
   "private": true,
   "proxy": "http://localhost/movieproject-api",

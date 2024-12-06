@@ -1,14 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../contexts/UserContext';
 import Profile from './profile/profile';
+import Search from './search/search';
+import Movies from './movies/movies';
 import './homepage.css';
 
 const Homepage = () => {
     const [logoutConfirm, setLogoutConfirm] = useState(false);
-    const [activeSection, setActiveSection] = useState('');
+    const [activeSection, setActiveSection] = useState('search');
     const navigate = useNavigate();
     const { logout } = useUser();
+
+    useEffect(() => {
+        setActiveSection('search');
+    }, []);
 
     const handleLogoutClick = () => {
         setLogoutConfirm(true);
@@ -57,10 +63,10 @@ const Homepage = () => {
                         PROFILE
                     </span>
                     <span 
-                        onClick={() => setActiveSection('movies')} 
-                        className={activeSection === 'movies' ? 'active' : ''}
+                        onClick={() => setActiveSection('search')} 
+                        className={activeSection === 'search' ? 'active' : ''}
                     >
-                        MOVIES
+                        SEARCH
                     </span>
                     <span 
                         onClick={() => setActiveSection('my-movies')} 
@@ -99,6 +105,8 @@ const Homepage = () => {
                 
                 <div className="content-container">
                     {activeSection === 'profile' && <Profile />}
+                    {activeSection === 'search' && <Search />}
+                    {activeSection === 'my-movies' && <Movies />}
                 </div>
             </div>
         </div>
