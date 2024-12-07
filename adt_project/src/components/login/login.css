@@ -1,4 +1,4 @@
-/* Same layout structure as landing.css */
+
 .login-container {
   display: flex;
   height: 100vh;
@@ -513,24 +513,24 @@
     width: 100%;
     max-width: 100%;
     flex: 0 0 100%;
-    min-height: 50vh; /* Ensure minimum height */
-    height: 50vh; /* Consistent height */
+    min-height: 50vh; 
+    height: 50vh; 
   }
 
   .left-panel {
     background-position: center;
     background-size: cover;
-    order: -1; /* Ensure left panel appears first */
+    order: -1;
   }
 
   .right-panel {
     padding: 1rem;
-    justify-content: center; /* Center content vertically */
+    justify-content: center;
     align-items: center;
     text-align: center;
   }
 
-  /* Adjust decorative circles for mobile */
+  
   .left-panel .circle-1,
   .left-panel .circle-2,
   .left-panel .circle-3,
@@ -539,25 +539,25 @@
   .left-panel .circle-6,
   .left-panel .circle-7,
   .left-panel .circle-8 {
-    display: none; /* Hide decorative elements */
+    display: none; 
   }
 
   .right-panel .shape-1,
   .right-panel .shape-2,
   .right-panel .shape-3,
   .right-panel .shape-4 {
-    display: none; /* Hide decorative shapes */
+    display: none; 
   }
 }
 
-/* Smaller mobile devices */
+
 @media screen and (max-width: 480px) {
   .login-container {
     overflow-x: hidden;
   }
 
   .left-panel, .right-panel {
-    min-height: 40vh; /* Slightly shorter on very small screens */
+    min-height: 40vh;
     height: auto;
   }
 

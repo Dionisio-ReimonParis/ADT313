@@ -3,9 +3,8 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from "react-route
 import { ThemeProvider, useTheme } from "./ThemeContext";
 import { UserProvider } from "./contexts/UserContext";
 import { AddMovieProvider } from './contexts/AddMovieContext';
-import { DeleteMovieProvider } from './contexts/DeleteMovieContext';
 import { ViewMovieProvider } from './contexts/ViewMovieContext';
-import { MovieProvider } from './contexts/MovieContext'; // Added import statement for MovieProvider
+import { UpdateMovieProvider } from './contexts/UpdateMovieContext';
 import Login from "./components/login/login";
 import Register from "./components/register/register";
 import Landing from "./components/landing/landing";
@@ -47,15 +46,13 @@ function AppWrapper() {
     <Router>
       <ThemeProvider>
         <UserProvider>
-          <MovieProvider>
-            <AddMovieProvider>
-              <DeleteMovieProvider>
-                <ViewMovieProvider>
-                  <App />
-                </ViewMovieProvider>
-              </DeleteMovieProvider>
-            </AddMovieProvider>
-          </MovieProvider>
+          <AddMovieProvider>
+            <ViewMovieProvider>
+              <UpdateMovieProvider>
+                <App />
+              </UpdateMovieProvider>
+            </ViewMovieProvider>
+          </AddMovieProvider>
         </UserProvider>
       </ThemeProvider>
     </Router>

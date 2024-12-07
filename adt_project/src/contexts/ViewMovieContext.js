@@ -1,119 +1,57 @@
-import React, { createContext, useContext } from 'react';
-import axios from 'axios';
-import { useUser } from './UserContext';
+import React, { createContext, useContext } from "react";
+import axios from "axios";
+import { useUser } from "./UserContext";
 
 const ViewMovieContext = createContext(null);
 
 export const ViewMovieProvider = ({ children }) => {
-    const { accessToken, user } = useUser();
+  const { accessToken } = useUser();
 
-    const getAllMovies = async () => {
-        // Validate user exists
-        if (!user || !user.id) {
-            throw new Error('User authentication required');
-        }
+  const getUserMovies = async (userId) => {
+    try {
+      if (!userId) {
+        throw new Error("User ID is required");
+      }
 
-        try {
-            // Log request details for debugging
-            console.log('Movie Fetch Request:', {
-                url: "/admin/movies",
-                userId: user.id,
-                accessToken: accessToken ? 'Present' : 'Missing'
-            });
+      const response = await axios.get(`/movies`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+      });
 
-            // Make GET request
-            const response = await axios.get("/admin/movies", {
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`
-                }
-            });
+      console.log("Fetched ALL movies for admin:", response.data);
 
-            // Log full response for debugging
-            console.log('Movies Response:', response);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching movies:", error);
+      if (error.response) {
+        console.error("Response Error:", error.response.data);
+        console.error("Response Status:", error.response.status);
+        console.error("Response Headers:", error.response.headers);
+        throw new Error(
+          error.response.data.message || "Failed to fetch movies"
+        );
+      }
+      throw error;
+    }
+  };
 
-            // Validate response structure
-            if (!response.data) {
-                throw new Error('No data received from server');
-            }
-
-            // Handle different possible response structures
-            const moviesData = response.data.movies || response.data;
-
-            return moviesData;
-        } catch (error) {
-            console.error('Movie Fetch Error:', {
-                message: error.message,
-                responseData: error.response?.data,
-                responseStatus: error.response?.status,
-                responseHeaders: error.response?.headers
-            });
-            throw error;
-        }
-    };
-
-    const getMovieById = async (movieId) => {
-        // Validate user exists
-        if (!user || !user.id) {
-            throw new Error('User authentication required');
-        }
-
-        try {
-            // Create FormData with userId and movieId
-            const formData = new FormData();
-            formData.append('userId', user.id);
-            formData.append('movieId', movieId);
-
-            // Make POST request with FormData
-            const response = await axios.post(`/admin/movies/${movieId}`, formData, {
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`,
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
-
-            // Log full response for debugging
-            console.log('Single Movie Response:', response);
-
-            // Validate response structure
-            if (!response.data) {
-                throw new Error('No data received from server');
-            }
-
-            // Handle different possible response structures
-            const movieData = response.data.movie || response.data;
-
-            // Validate movie data
-            if (!movieData || typeof movieData !== 'object') {
-                throw new Error('Invalid movie data format');
-            }
-
-            return movieData;
-        } catch (error) {
-            // Enhanced error logging
-            console.error('Single Movie Fetch Error:', {
-                message: error.message,
-                response: error.response?.data,
-                status: error.response?.status,
-                headers: error.response?.headers
-            });
-
-            // Throw a user-friendly error
-            if (error.response) {
-                throw new Error(error.response.data.message || 'Failed to fetch movie details');
-            }
-
-            // Rethrow to allow component-level error handling
-            throw error;
-        }
-    };
-
-    return (
-        <ViewMovieContext.Provider value={{ getAllMovies }}>
-            {children}
-        </ViewMovieContext.Provider>
-    );
+  return (
+    <ViewMovieContext.Provider
+      value={{
+        getUserMovies,
+      }}
+    >
+      {children}
+    </ViewMovieContext.Provider>
+  );
 };
 
 export const useViewMovie = () => {
-    return useContext(ViewMovieContext);
+  const context = useContext(ViewMovieContext);
+  if (context === null) {
+    throw new Error("useViewMovie must be used within a ViewMovieProvider");
+  }
+  return context;
 };

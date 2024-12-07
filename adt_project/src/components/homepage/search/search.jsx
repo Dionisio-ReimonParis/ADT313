@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useUser } from '../../../contexts/UserContext';
 import { useAddMovie } from '../../../contexts/AddMovieContext';
+import { useViewMovie } from '../../../contexts/ViewMovieContext';
 import './search.css';
 
 const Search = () => {
@@ -9,8 +10,14 @@ const Search = () => {
     const [loading, setLoading] = useState(true);
     const { user } = useUser();
     const { searchMovies, getMovieDetails, addMovie, addCasts, addPhotos, addVideos } = useAddMovie();
+    const { getUserMovies } = useViewMovie();
 
     useEffect(() => {
+        if (!user || !user.id) {
+            console.error("User is not available");
+            return;
+        }
+
         const fetchPopularMovies = async () => {
             try {
                 const response = await fetch(
@@ -23,7 +30,11 @@ const Search = () => {
                     }
                 );
                 const data = await response.json();
-                setMovies(data.results);
+                const userMovies = await getUserMovies(user.id);
+                const filteredMovies = data.results.filter(movie => 
+                    !userMovies.some(userMovie => userMovie.tmdbId === movie.id)
+                );
+                setMovies(filteredMovies);
             } catch (error) {
                 console.error('Error fetching popular movies:', error);
                 alert('Error loading movies. Please try again.');
@@ -33,7 +44,7 @@ const Search = () => {
         };
 
         fetchPopularMovies();
-    }, []);
+    }, [getUserMovies, user]);
 
     const handleSearch = async (query) => {
         if (!query) {
@@ -49,7 +60,11 @@ const Search = () => {
                     }
                 );
                 const data = await response.json();
-                setMovies(data.results);
+                const userMovies = await getUserMovies(user.id);
+                const filteredMovies = data.results.filter(movie => 
+                    !userMovies.some(userMovie => userMovie.tmdbId === movie.id)
+                );
+                setMovies(filteredMovies);
             } catch (error) {
                 console.error('Error fetching popular movies:', error);
             } finally {
@@ -61,7 +76,11 @@ const Search = () => {
         setLoading(true);
         try {
             const results = await searchMovies(query);
-            setMovies(results);
+            const userMovies = await getUserMovies(user.id);
+            const filteredMovies = results.filter(movie => 
+                !userMovies.some(userMovie => userMovie.tmdbId === movie.id)
+            );
+            setMovies(filteredMovies);
         } catch (error) {
             console.error('Error searching movies:', error);
             alert('Error searching movies. Please try again.');
@@ -141,38 +160,44 @@ const Search = () => {
 
     return (
         <div className="search-container">
-            <div className="search-box">
-                <input
-                    type="text"
-                    placeholder="Search for movies..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    onKeyPress={(e) => e.key === 'Enter' && handleSearch(searchQuery)}
-                />
-                <button onClick={() => handleSearch(searchQuery)}>Search</button>
-            </div>
-
-            {loading ? (
-                <div className="loading">Loading...</div>
+            {!user || !user.id ? (
+                <div>Please log in to search movies.</div>
             ) : (
-                <div className="movie-grid">
-                    {movies.map(movie => (
-                        <div key={movie.id} className="movie-card">
-                            <img
-                                src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                                alt={movie.title}
-                                onError={(e) => {
-                                    e.target.src = '/placeholder.png';
-                                }}
-                            />
-                            <div className="movie-info">
-                                <h3>{movie.title}</h3>
-                                <p>{movie.release_date}</p>
-                                <button onClick={() => handleAddMovie(movie)}>Add Movie</button>
-                            </div>
+                <>
+                    <div className="search-box">
+                        <input
+                            type="text"
+                            placeholder="Search for movies..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            onKeyPress={(e) => e.key === 'Enter' && handleSearch(searchQuery)}
+                        />
+                        <button onClick={() => handleSearch(searchQuery)}>Search</button>
+                    </div>
+
+                    {loading ? (
+                        <div className="loading">Loading...</div>
+                    ) : (
+                        <div className="movie-grid">
+                            {movies.map(movie => (
+                                <div key={movie.id} className="movie-card">
+                                    <img
+                                        src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                                        alt={movie.title}
+                                        onError={(e) => {
+                                            e.target.src = '/placeholder.png';
+                                        }}
+                                    />
+                                    <div className="movie-info">
+                                        <h3>{movie.title}</h3>
+                                        <p>{movie.release_date}</p>
+                                        <button onClick={() => handleAddMovie(movie)}>Add Movie</button>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
-                    ))}
-                </div>
+                    )}
+                </>
             )}
         </div>
     );
